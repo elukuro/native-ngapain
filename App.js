@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import type {Node} from 'react';
 import {
   SafeAreaView,
@@ -16,97 +16,90 @@ import {
   Text,
   useColorScheme,
   View,
+  Image,
+  TextInput,
+  Button,
+  FlatList,
 } from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    backgroundColor: isDarkMode ? '#555' : '#fafafa',
   };
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
+  const Cat = props => {
+    const catImage = props.name === 'nero' ? 'p_cat2.png' : 'p_cat1.png';
+    const [isHungry, setIsHungry] = useState(true);
+    return (
+      <View>
+        <Image
+          source={{uri: `https://reactnative.dev/docs/assets/${catImage}`}}
           style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits. test
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+            width: 'auto',
+            height: 300,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        />
+        <Button
+          onPress={() => {
+            setIsHungry(!isHungry);
+          }}
+          title="this is button"
+        />
+        <Text>cat name is {isHungry ? 'Iam so hungry' : 'Iam not hungry'}</Text>
+      </View>
+    );
+  };
+
+  const [text, setText] = useState('');
+  const style = StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingTop: 22,
+    },
+    item: {
+      padding: 10,
+      fontSize: 8,
+      height: 44,
+    },
+  });
+  return (
+    <ScrollView>
+      <View>
+        <Text>some text here</Text>
+        <View>
+          <Text>Some more text</Text>
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      </View>
+      <Cat name="nero" />
+      <Cat name="toru" />
+      <TextInput
+        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+        defaultValue=""
+        placeholder="type here to translate"
+        onChangeText={text => setText(text)}
+      />
+      <Text>{text}</Text>
+      <View style={style.container}>
+        <FlatList
+          data={[
+            {key: 'Devin'},
+            {key: 'Booker'},
+            {key: 'Lamelo'},
+            {key: 'Ball'},
+            {key: 'Deangello'},
+            {key: 'russel'},
+            {key: 'wesbrok'},
+          ]}
+          renderItem={({item}) => <Text style={style.item}>{item.key}</Text>}
+        />
+      </View>
+    </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
