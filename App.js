@@ -89,7 +89,7 @@ const App: () => Node = () => {
         />
         <Text>{text}</Text>
         <View style={style.container}>
-          <FlatList
+          {/* <FlatList
             data={[
               {key: 'Devin'},
               {key: 'Booker'},
@@ -100,7 +100,7 @@ const App: () => Node = () => {
               {key: 'wesbrok'},
             ]}
             renderItem={({item}) => <Text style={style.item}>{item.key}</Text>}
-          />
+          /> */}
         </View>
       </ScrollView>
     );
@@ -129,11 +129,7 @@ const App: () => Node = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{title: 'Welcome'}}
-        />
+        <Stack.Screen name="Rumah" component={Home} />
         <Stack.Screen name="Profile" component={Profile} />
       </Stack.Navigator>
     </NavigationContainer>
