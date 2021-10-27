@@ -14,8 +14,10 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-function Home() {
+function Home({navigation}) {
   const [surahList, setSurahList] = useState();
   const [selectedSurah, setSelectedSurah] = useState();
   useEffect(() => {
@@ -42,15 +44,19 @@ function Home() {
     },
   });
 
-  const selectSurah = id => {
-    setSelectedSurah(id);
+  const selectSurah = (id, count_ayat) => {
+    setSelectedSurah({id, count_ayat});
+    navigation.navigate('Surat', {
+      suratId: selectedSurah.id,
+      countAyat: selectedSurah.count_ayat,
+    });
   };
   const Item = ({item}) => {
     return (
       <View>
         <TouchableOpacity
           style={styles.item}
-          onPress={() => selectSurah(item.id)}>
+          onPress={() => selectSurah(item.id, item.count_ayat)}>
           <Text>{item.surat_name}</Text>
         </TouchableOpacity>
       </View>
@@ -61,7 +67,6 @@ function Home() {
     return (
       <SafeAreaView style={styles.container}>
         {/* <Text>{JSON.stringify(surahList)}</Text> */}
-        <Text>{selectedSurah}</Text>
         <FlatList
           data={surahList}
           renderItem={Item}

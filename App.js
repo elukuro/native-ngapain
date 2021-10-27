@@ -15,6 +15,7 @@ import {
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import UiHome from './container/Home.js';
+import UiSurat from './container/Surat.js';
 
 const Stack = createNativeStackNavigator();
 const MyTheme = {
@@ -28,11 +29,22 @@ const MyTheme = {
     notification: 'rgb(255, 69, 58)',
   },
 };
+const headerOption = {
+  headerStyle: {
+    backgroundColor: '#f4511e',
+  },
+  headerTintColor: '#fff',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+  },
+};
+
 const App: () => Node = () => {
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={UiHome} />
+        <Stack.Screen options={headerOption} name="Home" component={UiHome} />
+        <Stack.Screen options={headerOption} name="Surat" component={UiSurat} />
       </Stack.Navigator>
     </NavigationContainer>
   );
