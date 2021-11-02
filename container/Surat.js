@@ -17,14 +17,7 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-function Home({navigation}) {
-  const [surahList, setSurahList] = useState();
-  const [selectedSurah, setSelectedSurah] = useState();
-  useEffect(() => {
-    API.getSurah().then(function (result) {
-      setSurahList(result.data);
-    });
-  }, []);
+function Surat({route, navigation}) {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -43,39 +36,32 @@ function Home({navigation}) {
       color: '#fff',
     },
   });
-
-  const selectSurah = (id, count_ayat) => {
-    setSelectedSurah({id, count_ayat});
-    if (selectedSurah) {
-      navigation.navigate('Surat', selectedSurah);
-    }
+  const selectAyat = ayat => {
+    navigation.navigate('Ayat', {ayat: ayat, suartId: route.params.id});
   };
   const Item = ({item}) => {
     return (
       <View>
         <TouchableOpacity
           style={styles.item}
-          onPress={() => selectSurah(item.id, item.count_ayat)}>
-          <Text>{item.surat_name}</Text>
+          onPress={() => selectAyat(item + 1)}>
+          <Text>Ayat {item + 1}</Text>
         </TouchableOpacity>
       </View>
     );
   };
-
-  if (surahList) {
-    return (
-      <SafeAreaView style={styles.container}>
-        {/* <Text>{JSON.stringify(surahList)}</Text> */}
-        <FlatList
-          data={surahList}
-          renderItem={Item}
-          keyExtractor={item => item.id}
-        />
-      </SafeAreaView>
-    );
-  } else {
-    return <Text>loading...</Text>;
-  }
+  const count = () => {
+    let ayat = [];
+    for (let i = 0; i < route.params.count_ayat; i++) {
+      ayat.push(i);
+    }
+    return ayat;
+  };
+  return (
+    <SafeAreaView style={styles.container}>
+      <FlatList data={count()} renderItem={Item} keyExtractor={item => item} />
+    </SafeAreaView>
+  );
 }
 
-export default Home;
+export default Surat;

@@ -16,6 +16,7 @@ import {
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import UiHome from './container/Home.js';
 import UiSurat from './container/Surat.js';
+import UiAyat from './container/Ayat.js';
 
 const Stack = createNativeStackNavigator();
 const MyTheme = {
@@ -45,6 +46,7 @@ const App: () => Node = () => {
       <Stack.Navigator>
         <Stack.Screen options={headerOption} name="Home" component={UiHome} />
         <Stack.Screen options={headerOption} name="Surat" component={UiSurat} />
+        <Stack.Screen options={headerOption} name="Ayat" component={UiAyat} />
       </Stack.Navigator>
     </NavigationContainer>
   );
