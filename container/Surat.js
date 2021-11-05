@@ -37,7 +37,7 @@ function Surat({route, navigation}) {
     },
   });
   const selectAyat = ayat => {
-    navigation.navigate('Ayat', {ayat: ayat, suartId: route.params.id});
+    navigation.navigate('Ayat', {ayat: ayat, suratId: route.params.id});
   };
   const Item = ({item}) => {
     return (

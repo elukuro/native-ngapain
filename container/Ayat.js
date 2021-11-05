@@ -22,25 +22,36 @@ function Ayat({route, navigation}) {
     container: {
       flex: 1,
       backgroundColor: '#374151',
-      padding: 8,
+      padding: 20,
     },
     baseText: {
       fontFamily: 'fonts',
     },
     titleText: {
-      fontSize: 20,
-      fontWeight: 'bold',
-    },
-    item: {
-      padding: 10,
-      color: '#fff',
+      fontSize: 24,
+      fontWeight: 'normal',
+      fontFamily: 'fonts',
+      color: '#fafafa',
     },
   });
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text>{JSON.stringify(route.params)}</Text>
-    </SafeAreaView>
-  );
+  const [ayat, setAyat] = useState('');
+  useEffect(() => {
+    API.getDetail(route.params).then(function (result) {
+      setAyat(result);
+    });
+  }, [route.params]);
+  if (ayat) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.titleText}>{ayat[0].aya_text}</Text>
+        <Text style={styles.baseText}>
+          {ayat[0].translation_aya_text.replace(/<\/?[^>]+(>|$)/g, '')}
+        </Text>
+      </SafeAreaView>
+    );
+  } else {
+    return <Text>loading...</Text>;
+  }
 }
 
 export default Ayat;

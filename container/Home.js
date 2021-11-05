@@ -19,12 +19,11 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 function Home({navigation}) {
   const [surahList, setSurahList] = useState();
-  const [selectedSurah, setSelectedSurah] = useState();
   useEffect(() => {
     API.getSurah().then(function (result) {
       setSurahList(result.data);
     });
-  }, []);
+  }, [surahList]);
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -45,10 +44,7 @@ function Home({navigation}) {
   });
 
   const selectSurah = (id, count_ayat) => {
-    setSelectedSurah({id, count_ayat});
-    if (selectedSurah) {
-      navigation.navigate('Surat', selectedSurah);
-    }
+    navigation.navigate('Surat', {id, count_ayat});
   };
   const Item = ({item}) => {
     return (

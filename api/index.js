@@ -11,10 +11,8 @@ const API = {
   },
   getDetail: async function (params) {
     if (params) {
-      let surat = surahCollection[params.id];
-      return surat.data.filter(
-        item => item.aya_number === parseInt(params.ayat),
-      );
+      let surat = surahCollection[params.suratId];
+      return surat.data.filter(item => item.aya_number === params.ayat);
     }
     return null;
   },
