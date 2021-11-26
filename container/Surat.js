@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
+import style from './../assets/style';
 
 function Surat({route, navigation}) {
   const selectAyat = ayat => {
@@ -13,9 +14,9 @@ function Surat({route, navigation}) {
   };
   const Item = ({item}) => {
     return (
-      <View>
+      <View style={style.item}>
         <TouchableOpacity onPress={() => selectAyat(item + 1)}>
-          <Text>Ayat {item + 1}</Text>
+          <Text style={style.text}>Ayat {item + 1}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -28,8 +29,17 @@ function Surat({route, navigation}) {
     return ayat;
   };
   return (
-    <SafeAreaView>
-      <FlatList data={count()} renderItem={Item} keyExtractor={item => item} />
+    <SafeAreaView style={style.container}>
+      <Text style={style.title}>
+        Langkah <Text>2</Text>
+      </Text>
+      <Text style={style.description}>Pilih Ayat</Text>
+      <FlatList
+        style={style.flatList}
+        data={count()}
+        renderItem={Item}
+        keyExtractor={item => item}
+      />
     </SafeAreaView>
   );
 }

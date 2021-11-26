@@ -32,7 +32,19 @@ function Home({navigation}) {
   if (surahList) {
     return (
       <SafeAreaView style={style.container}>
-        <Text style={style.title}>Langkah 1</Text>
+        <Text style={style.title}>
+          Langkah{' '}
+          <Text
+            style={{
+              backgroundColor: '#f008',
+              borderWidth: 1,
+              borderColor: '#000',
+              borderRadius: 222,
+              padding: 20,
+            }}>
+            1
+          </Text>
+        </Text>
         <Text style={style.description}>Pilih surat</Text>
         <FlatList
           style={style.flatList}
