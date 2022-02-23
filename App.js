@@ -1,34 +1,17 @@
 import React from 'react';
-import type {Node} from 'react';
-import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import UiHome from './container/Home.js';
-import UiSurat from './container/Surat.js';
-import UiAyat from './container/Ayat.js';
+import UiHome from './pages/Home.js';
+import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 
-const Stack = createNativeStackNavigator();
-const MyTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: '#374151',
-    text: '#fff',
+const switchNavigator = createStackNavigator(
+  {
+    welcomeFlow: UiHome,
   },
-};
+  {
+    headerMode: 'none',
+  },
+);
 
-const App: () => Node = () => {
-  return (
-    <NavigationContainer theme={MyTheme}>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Stack.Screen name="Home" component={UiHome} />
-        <Stack.Screen name="Surat" component={UiSurat} />
-        <Stack.Screen name="Ayat" component={UiAyat} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
+const App = createAppContainer(switchNavigator);
 
 export default App;
