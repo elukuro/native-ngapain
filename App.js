@@ -1,17 +1,24 @@
 import React from 'react';
-import UiHome from './pages/Home.js';
-import {createAppContainer, createSwitchNavigator} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
+import SplashPage from './pages/Splash.js';
+import IntroPage from './pages/Intro';
 
-const switchNavigator = createStackNavigator(
-  {
-    welcomeFlow: UiHome,
-  },
-  {
-    headerMode: 'none',
-  },
-);
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+const Stack = createNativeStackNavigator();
 
-const App = createAppContainer(switchNavigator);
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Splash"
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Stack.Screen name="Splash" component={SplashPage} />
+        <Stack.Screen name="Intro" component={IntroPage} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 export default App;
