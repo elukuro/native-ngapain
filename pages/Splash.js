@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Text, SafeAreaView, StyleSheet, Image} from 'react-native';
 
-function Splash({navigation}) {
+const Splash = ({navigation}) => {
   useEffect(() => {
     const milliseconds = 5000;
     setTimeout(() => {
@@ -18,7 +18,7 @@ function Splash({navigation}) {
       />
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
