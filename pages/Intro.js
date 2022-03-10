@@ -54,7 +54,7 @@ const ThirdIntro = navigation => {
         />
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Main')}>
+          onPress={() => navigation.navigate('MainNavigator')}>
           <Text style={styles.buttonText}>Bismillah</Text>
         </TouchableOpacity>
       </View>
