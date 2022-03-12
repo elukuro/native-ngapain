@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   ImageBackground,
 } from 'react-native';
+import * as Progress from 'react-native-progress';
 
 const Spacer = ({children}) => {
   return <View style={styles.spacer}>{children}</View>;
@@ -24,11 +25,21 @@ const Main = () => {
           <Text style={styles.textBold}>13</Text> hari
         </Text>
       </View>
-      <View style={styles.horizontalCardWrapper}>
-        <View style={[styles.card]}>
-          <Text>Overall</Text>
+      <View style={styles.firstCardWrapper}>
+        <View style={[styles.card, styles.cardHorizontal]}>
+          <Progress.Circle
+            progress={0.3}
+            size={100}
+            showsText={true}
+            thickness={10}
+            color={'#7F7FD5'}
+            borderWidth={0}
+          />
+          <Text style={[styles.textBold, styles.textNormal, styles.textBlack]}>
+            Overall
+          </Text>
         </View>
-        <View style={[styles.card, styles.cardLeft]}>
+        <View style={[styles.card, styles.cardLeft, styles.cardHorizontal]}>
           <Text
             style={[
               styles.textBlack,
@@ -54,6 +65,62 @@ const Main = () => {
               34
             </Text>
           </Spacer>
+        </View>
+      </View>
+      <View style={[styles.secondCardWrapper]}>
+        <View style={[styles.card, styles.cardLeft, {marginBottom: 10}]}>
+          <Spacer>
+            <Text
+              style={[styles.textBlack, styles.textNormal, styles.textBold]}>
+              Surat
+            </Text>
+          </Spacer>
+          <View style={[styles.progressBar]}>
+            <Progress.Bar
+              progress={0.7}
+              width={null}
+              color={'#85D5EE'}
+              unfilledColor="#E6E6E6"
+              height={10}
+              borderWidth={0}
+            />
+            <Spacer>
+              <Text
+                style={[
+                  styles.textSmall,
+                  styles.textThin,
+                  {textAlign: 'right', marginTop: 5},
+                ]}>
+                20/35
+              </Text>
+            </Spacer>
+          </View>
+        </View>
+        <View style={[styles.card, styles.cardLeft]}>
+          <Spacer>
+            <Text
+              style={[styles.textBlack, styles.textNormal, styles.textBold]}>
+              Ayat
+            </Text>
+          </Spacer>
+          <View style={[styles.progressBar]}>
+            <Progress.Bar
+              progress={0.2}
+              width={null}
+              color={'#EE8585'}
+              unfilledColor="#E6E6E6"
+              height={10}
+              borderWidth={0}
+            />
+            <Text
+              style={[
+                styles.textSmall,
+                styles.textThin,
+                {textAlign: 'right', marginTop: 5},
+              ]}>
+              20/35
+            </Text>
+          </View>
         </View>
       </View>
       <ImageBackground
@@ -120,13 +187,24 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     color: '#000',
   },
-  horizontalCardWrapper: {
+  firstCardWrapper: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 30,
     paddingTop: 80,
     zIndex: 1,
+  },
+  secondCardWrapper: {
+    marginTop: 20,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    zIndex: 1,
+    paddingHorizontal: 30,
+  },
+  progressBar: {
+    width: '100%',
   },
   card: {
     borderWidth: 1,
@@ -136,9 +214,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
+  },
+  cardHorizontal: {
     width: '48%',
     height: 140,
-    padding: 20,
   },
   cardLeft: {
     alignItems: 'flex-start',
