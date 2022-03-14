@@ -1,13 +1,13 @@
 import React from 'react';
-import {Text} from 'react-native';
 // import 'react-native-gesture-handler';
 import SplashPage from './pages/Splash';
 import IntroPage from './pages/Intro';
 import MainPage from './pages/Main';
-
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+
+import CustomDrawer from './components/CustomDrawer';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -20,6 +20,7 @@ const MainNavigator = ({}) => {
   return (
     <Drawer.Navigator
       initialRouteName="Main"
+      drawerContent={props => <CustomDrawer {...props} />}
       screenOptions={{
         headerStyle: {
           backgroundColor: '#fff',
