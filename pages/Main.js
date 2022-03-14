@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   ImageBackground,
 } from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import * as Progress from 'react-native-progress';
 
 const Spacer = ({children}) => {
@@ -68,7 +69,7 @@ const Main = () => {
         </View>
       </View>
       <View style={[styles.secondCardWrapper]}>
-        <View style={[styles.card, styles.cardLeft, {marginBottom: 10}]}>
+        <View style={[styles.card, styles.cardLeft, {marginBottom: 15}]}>
           <Spacer>
             <Text
               style={[styles.textBlack, styles.textNormal, styles.textBold]}>
@@ -122,6 +123,11 @@ const Main = () => {
             </Text>
           </View>
         </View>
+      </View>
+      <View style={[styles.buttonContainer]}>
+        <TouchableOpacity style={[styles.button]}>
+          <Text style={[styles.textPurple, styles.textBold]}>Mulai</Text>
+        </TouchableOpacity>
       </View>
       <ImageBackground
         resizeMode="cover"
@@ -222,6 +228,26 @@ const styles = StyleSheet.create({
   },
   cardLeft: {
     alignItems: 'flex-start',
+  },
+  buttonContainer: {
+    marginTop: '10%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  button: {
+    position: 'relative',
+    borderRadius: 20,
+    backgroundColor: '#fff',
+    color: '#7F7FD5',
+    height: 50,
+    width: 200,
+    borderWidth: 2,
+    borderColor: '#7F7FD5',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
