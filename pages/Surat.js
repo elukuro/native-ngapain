@@ -6,12 +6,16 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
-const Surat = ({route}) => {
+
+const Surat = ({route, navigation}) => {
   const surah = route.params.surah;
 
   const AyatItem = ayat => {
     return (
-      <TouchableOpacity style={styles.ayatItem} key={ayat}>
+      <TouchableOpacity
+        style={styles.ayatItem}
+        key={ayat}
+        onPress={() => navigation.navigate('Ayat', {suratId: surah.id, ayat})}>
         <View>
           <Text>{ayat}</Text>
         </View>

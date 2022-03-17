@@ -4,6 +4,7 @@ import SplashPage from './pages/Splash';
 import IntroPage from './pages/Intro';
 import MainPage from './pages/Main';
 import SuratPage from './pages/Surat';
+import AyatPage from './pages/Ayat';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -39,6 +40,13 @@ const MainNavigator = ({}) => {
       <Drawer.Screen
         name="Surat"
         component={SuratPage}
+        options={{
+          headerTitle: props => <LogoTitle {...props} />,
+        }}
+      />
+      <Drawer.Screen
+        name="Ayat"
+        component={AyatPage}
         options={{
           headerTitle: props => <LogoTitle {...props} />,
         }}
