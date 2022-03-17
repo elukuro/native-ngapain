@@ -3,6 +3,8 @@ import React from 'react';
 import SplashPage from './pages/Splash';
 import IntroPage from './pages/Intro';
 import MainPage from './pages/Main';
+import SuratPage from './pages/Surat';
+
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -19,7 +21,7 @@ function LogoTitle() {
 const MainNavigator = ({}) => {
   return (
     <Drawer.Navigator
-      initialRouteName="Main"
+      initialRouteName="Home"
       drawerContent={props => <CustomDrawer {...props} />}
       screenOptions={{
         headerStyle: {
@@ -30,6 +32,13 @@ const MainNavigator = ({}) => {
       <Drawer.Screen
         name="Homepage"
         component={MainPage}
+        options={{
+          headerTitle: props => <LogoTitle {...props} />,
+        }}
+      />
+      <Drawer.Screen
+        name="Surat"
+        component={SuratPage}
         options={{
           headerTitle: props => <LogoTitle {...props} />,
         }}

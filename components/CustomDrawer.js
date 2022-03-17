@@ -15,13 +15,18 @@ const CustomDrawer = props => {
     setSurahList(API.getSurah().data);
   }, []);
 
-  const renderDrawerItem = () => {
+  const renderDrawerItem = ({navigation}) => {
     return surahList.map((surah, index) => {
       return (
-        <View key={index} style={[styles.drawerItemContainer]}>
-          <Text style={[styles.textBold, styles.colorBlack, styles.textNormal]}>
-            {surah.surat_name}
-          </Text>
+        <View key={index}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Surat', {surah})}
+            style={[styles.drawerItemContainer]}>
+            <Text
+              style={[styles.textBold, styles.colorBlack, styles.textNormal]}>
+              {surah.surat_name}
+            </Text>
+          </TouchableOpacity>
         </View>
       );
     });
@@ -41,7 +46,7 @@ const CustomDrawer = props => {
           ]}>
           Pilih Surat
         </Text>
-        {renderDrawerItem()}
+        {renderDrawerItem({...props})}
       </View>
     </DrawerContentScrollView>
   );
