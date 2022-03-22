@@ -16,7 +16,7 @@ const FirstIntro = () => {
     <View style={styles.textContainer}>
       <Text style={styles.heading}>Assalamuallaikum</Text>
       <Text style={styles.caption}>
-        <Text style={styles.textHighlight}>#HafalinYuk</Text> akan membantu kamu
+        <Text style={styles.textHighlight}>#HapalinYuk</Text> akan membantu kamu
         agar bias menghafal juz 30 dengan lebih mudah, Insya allah
       </Text>
     </View>
@@ -43,7 +43,7 @@ const ThirdIntro = navigation => {
   return (
     <View style={styles.textContainer}>
       <Text style={[styles.headingWithoutMarginBottom]}>
-        Sudah Siap ? #HafalinYuk
+        Sudah Siap ? #HapalinYuk
       </Text>
       <View>
         <Text>Masukkan namamu disini:</Text>

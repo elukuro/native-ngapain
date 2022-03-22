@@ -12,6 +12,18 @@ import API from './../api/index';
 const Ayat = ({route, navigation}) => {
   const [ayat, setAyat] = useState([]);
   const [surat, setSurat] = useState('');
+  const [show, setShow] = useState(true);
+  const getShow = () => {
+    if (show) {
+      return {
+        color: '#000',
+      };
+    }
+    return {
+      color: '#7F7FD5',
+      backgroundColor: '#7F7FD5',
+    };
+  };
   useEffect(() => {
     let {suratName, ...payload} = route.params;
     setAyat(API.getDetail(payload)[0]);
@@ -35,7 +47,13 @@ const Ayat = ({route, navigation}) => {
         </Text>
       </View>
       <View style={[styles.largeVerticalSpacer, styles.spacer]}>
-        <Text style={[styles.textLarge, styles.textBlack, styles.textArab]}>
+        <Text
+          style={[
+            styles.textLarge,
+            styles.textBlack,
+            styles.textArab,
+            getShow(),
+          ]}>
           {ayat.aya_text}
         </Text>
         <Text style={[styles.textRight, styles.textNormal, {marginTop: 20}]}>
@@ -43,8 +61,12 @@ const Ayat = ({route, navigation}) => {
         </Text>
       </View>
       <View style={[styles.buttonContainer, styles.spacer]}>
-        <TouchableOpacity style={[styles.button]}>
-          <Text style={[styles.textPurple, styles.textBold]}>Show</Text>
+        <TouchableOpacity
+          style={[styles.button]}
+          onPress={() => setShow(!show)}>
+          <Text style={[styles.textPurple, styles.textBold]}>
+            {show ? 'Hide' : 'Show'}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.button, styles.buttonCircle]}
