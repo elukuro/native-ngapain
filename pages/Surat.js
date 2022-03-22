@@ -15,7 +15,13 @@ const Surat = ({route, navigation}) => {
       <TouchableOpacity
         style={styles.ayatItem}
         key={ayat}
-        onPress={() => navigation.navigate('Ayat', {suratId: surah.id, ayat})}>
+        onPress={() =>
+          navigation.navigate('Ayat', {
+            suratId: surah.id,
+            ayat,
+            suratName: surah.surat_name,
+          })
+        }>
         <View>
           <Text>{ayat}</Text>
         </View>

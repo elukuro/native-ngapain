@@ -16,8 +16,8 @@ const FirstIntro = () => {
     <View style={styles.textContainer}>
       <Text style={styles.heading}>Assalamuallaikum</Text>
       <Text style={styles.caption}>
-        <Text style={styles.textHighlight}>#NuunProject</Text> akan membantu
-        kamu agar bias menghafal juz 30 dengan lebih mudah, Insya allah
+        <Text style={styles.textHighlight}>#HafalinYuk</Text> akan membantu kamu
+        agar bias menghafal juz 30 dengan lebih mudah, Insya allah
       </Text>
     </View>
   );
