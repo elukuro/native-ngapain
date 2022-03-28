@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,
   Text,
@@ -13,6 +14,7 @@ const Ayat = ({route, navigation}) => {
   const [ayat, setAyat] = useState([]);
   const [surat, setSurat] = useState('');
   const [show, setShow] = useState(true);
+
   const getShow = () => {
     if (show) {
       return {
@@ -20,10 +22,19 @@ const Ayat = ({route, navigation}) => {
       };
     }
     return {
-      color: '#7F7FD5',
-      backgroundColor: '#7F7FD5',
+      color: '#fff',
     };
   };
+
+  const saveAyat = async payload => {
+    try {
+      await AsyncStorage.setItem('@LastVisit', JSON.stringify(payload));
+      navigation.navigate('Ayat', payload);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     let {suratName, ...payload} = route.params;
     setAyat(API.getDetail(payload)[0]);
@@ -71,7 +82,7 @@ const Ayat = ({route, navigation}) => {
         <TouchableOpacity
           style={[styles.button, styles.buttonCircle]}
           onPress={() =>
-            navigation.navigate('Ayat', {
+            saveAyat({
               suratId: ayat.sura_id,
               suratName: surat,
               ayat: ayat.aya_number + 1,

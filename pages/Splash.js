@@ -6,8 +6,8 @@ const Splash = ({navigation}) => {
   useEffect(() => {
     const milliseconds = 5000;
     setTimeout(async () => {
+      AsyncStorage.clear();
       const asyncName = await AsyncStorage.getItem('@User');
-      console.log(asyncName);
       if (asyncName) {
         navigation.navigate('MainNavigator');
       } else {

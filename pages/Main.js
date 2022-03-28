@@ -9,16 +9,20 @@ import {
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import * as Progress from 'react-native-progress';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useIsFocused} from '@react-navigation/native';
 
 const Spacer = ({children}) => {
   return <View style={styles.spacer}>{children}</View>;
 };
 
-const Main = () => {
+const Main = ({route, navigation}) => {
   const [user, setUser] = useState(null);
   const [sinceDay, setSinceDay] = useState(null);
+  const [lastVisit, setLastVisit] = useState(null);
+  const isVisible = useIsFocused();
   const initData = async () => {
     const userData = await AsyncStorage.getItem('@User');
+    const lastVisitData = await AsyncStorage.getItem('@LastVisit');
     const currentTime = new Date().getTime();
     const oneDayInMiliseconds = 24 * 60 * 60 * 1000;
     const dayCount = Math.floor(
@@ -26,10 +30,13 @@ const Main = () => {
     );
     setUser(JSON.parse(userData));
     setSinceDay(dayCount);
+    setLastVisit(JSON.parse(lastVisitData));
   };
   useEffect(() => {
-    initData();
-  }, []);
+    if (isVisible) {
+      initData();
+    }
+  }, [isVisible]);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.greeting}>
@@ -74,7 +81,7 @@ const Main = () => {
               Surat
             </Text>
             <Text style={[styles.textBig, styles.textBlack, styles.textBold]}>
-              An-Nas
+              {lastVisit ? lastVisit.suratName : '-'}
             </Text>
           </Spacer>
           <Spacer>
@@ -82,7 +89,7 @@ const Main = () => {
               Ayat
             </Text>
             <Text style={[styles.textBig, styles.textBlack, styles.textBold]}>
-              34
+              {lastVisit ? lastVisit.ayat : '-'}
             </Text>
           </Spacer>
         </View>
@@ -144,7 +151,15 @@ const Main = () => {
         </View>
       </View>
       <View style={[styles.buttonContainer]}>
-        <TouchableOpacity style={[styles.button]}>
+        <TouchableOpacity
+          style={[styles.button]}
+          onPress={() => {
+            if (lastVisit) {
+              navigation.navigate('Ayat', lastVisit);
+            } else {
+              navigation.openDrawer();
+            }
+          }}>
           <Text style={[styles.textPurple, styles.textBold]}>Mulai</Text>
         </TouchableOpacity>
       </View>
