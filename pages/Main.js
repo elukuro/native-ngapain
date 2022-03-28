@@ -160,7 +160,9 @@ const Main = ({route, navigation}) => {
               navigation.openDrawer();
             }
           }}>
-          <Text style={[styles.textPurple, styles.textBold]}>Mulai</Text>
+          <Text style={[styles.textPurple, styles.textBold]}>
+            {lastVisit ? 'Terakhir baca' : 'Mulai'}
+          </Text>
         </TouchableOpacity>
       </View>
       <ImageBackground

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
 import API from './../api/index';
 
@@ -58,15 +59,35 @@ const Ayat = ({route, navigation}) => {
         </Text>
       </View>
       <View style={[styles.largeVerticalSpacer, styles.spacer]}>
-        <Text
-          style={[
-            styles.textLarge,
-            styles.textBlack,
-            styles.textArab,
-            getShow(),
-          ]}>
-          {ayat.aya_text}
-        </Text>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+          }}>
+          <BouncyCheckbox
+            style={{marginRight: 16}}
+            size={30}
+            fillColor="green"
+            unfillColor="#FFFFFF"
+            iconStyle={{borderColor: 'green'}}
+            isChecked={true}
+            onPress={() => {
+              console.log('preesed');
+            }}
+          />
+          <Text
+            style={[
+              styles.textLarge,
+              styles.textBlack,
+              styles.textArab,
+              getShow(),
+            ]}>
+            {ayat.aya_text}
+          </Text>
+        </View>
+
         <Text style={[styles.textRight, styles.textNormal, {marginTop: 20}]}>
           {ayat.translation_aya_text}
         </Text>
