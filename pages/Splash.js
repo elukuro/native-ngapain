@@ -1,11 +1,18 @@
 import React, {useEffect} from 'react';
 import {Text, SafeAreaView, StyleSheet, Image} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Splash = ({navigation}) => {
   useEffect(() => {
     const milliseconds = 5000;
-    setTimeout(() => {
-      navigation.navigate('Intro');
+    setTimeout(async () => {
+      const asyncName = await AsyncStorage.getItem('@User');
+      console.log(asyncName);
+      if (asyncName) {
+        navigation.navigate('MainNavigator');
+      } else {
+        navigation.navigate('Intro');
+      }
     }, milliseconds);
   }, []);
 

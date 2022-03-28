@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 export const {width, height} = Dimensions.get('window');
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FirstIntro = () => {
   return (
@@ -40,21 +41,32 @@ const SecondIntro = () => {
 
 const ThirdIntro = navigation => {
   const [name, setName] = useState(null);
+  const saveName = async () => {
+    try {
+      const currentTime = new Date();
+      const payload = {
+        name,
+        time: currentTime.getTime(),
+      };
+      await AsyncStorage.setItem('@User', JSON.stringify(payload));
+      navigation.navigate('MainNavigator');
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <View style={styles.textContainer}>
       <Text style={[styles.headingWithoutMarginBottom]}>
         Sudah Siap ? #HapalinYuk
       </Text>
       <View>
-        <Text>Masukkan namamu disini:</Text>
+        <Text style={[styles.caption]}>Masukkan namamu disini:</Text>
         <TextInput
           style={styles.textInput}
           onChangeText={setName}
           value={name}
         />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('MainNavigator')}>
+        <TouchableOpacity style={styles.button} onPress={() => saveName()}>
           <Text style={styles.buttonText}>Bismillah</Text>
         </TouchableOpacity>
       </View>
@@ -130,7 +142,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#3D3D3D',
     width: '100%',
+    color: '#7F7FD5',
     marginBottom: '40%',
+    textAlign: 'center',
   },
   button: {
     height: 50,

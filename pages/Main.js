@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,22 +8,41 @@ import {
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import * as Progress from 'react-native-progress';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Spacer = ({children}) => {
   return <View style={styles.spacer}>{children}</View>;
 };
 
 const Main = () => {
+  const [user, setUser] = useState(null);
+  const [sinceDay, setSinceDay] = useState(null);
+  const initData = async () => {
+    const userData = await AsyncStorage.getItem('@User');
+    const currentTime = new Date().getTime();
+    const oneDayInMiliseconds = 24 * 60 * 60 * 1000;
+    const dayCount = Math.floor(
+      (currentTime - JSON.parse(userData).time) / oneDayInMiliseconds,
+    );
+    setUser(JSON.parse(userData));
+    setSinceDay(dayCount);
+  };
+  useEffect(() => {
+    initData();
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.greeting}>
         <Text style={[styles.text]}>Assalamuallaikum</Text>
-        <Text style={[styles.heading, styles.textPurple]}>Heru Hartanto</Text>
+        <Text style={[styles.heading, styles.textPurple]}>
+          {user ? user.name : '-'}
+        </Text>
         <Text style={styles.caption}>
           Kamu telah menjalankan{' '}
           <Text style={[styles.textPurple, styles.textBold]}>#HafalinYuk</Text>{' '}
           selama
-          <Text style={styles.textBold}>13</Text> hari
+          <Text style={styles.textBold}> {user ? sinceDay : '-'} </Text>
+          hari
         </Text>
       </View>
       <View style={styles.firstCardWrapper}>
