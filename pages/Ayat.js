@@ -8,6 +8,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import {useIsFocused} from '@react-navigation/native';
 
 import API from './../api/index';
 
@@ -15,8 +16,11 @@ const Ayat = ({route, navigation}) => {
   const [ayat, setAyat] = useState([]);
   const [surat, setSurat] = useState('');
   const [show, setShow] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
 
-  const getShow = () => {
+  const isVisible = useIsFocused();
+
+  const toggleShowStyle = () => {
     if (show) {
       return {
         color: '#000',
@@ -28,19 +32,25 @@ const Ayat = ({route, navigation}) => {
   };
 
   const saveAyat = async payload => {
-    try {
-      await AsyncStorage.setItem('@LastVisit', JSON.stringify(payload));
-      navigation.navigate('Ayat', payload);
-    } catch (e) {
-      console.log(e);
+    if (isChecked) {
+      try {
+        await AsyncStorage.setItem('@LastVisit', JSON.stringify(payload));
+        navigation.navigate('Ayat', payload);
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
   useEffect(() => {
-    let {suratName, ...payload} = route.params;
-    setAyat(API.getDetail(payload)[0]);
-    setSurat(suratName);
-  }, [route]);
+    console.log('visible', isVisible);
+    if (isVisible) {
+      let {suratName, ...payload} = route.params;
+      setAyat(API.getDetail(payload)[0]);
+      setSurat(suratName);
+      setIsChecked(false);
+    }
+  }, [isVisible, route.params]);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.spacer}>
@@ -72,9 +82,10 @@ const Ayat = ({route, navigation}) => {
             fillColor="green"
             unfillColor="#FFFFFF"
             iconStyle={{borderColor: 'green'}}
-            isChecked={true}
+            disableBuiltInState
+            isChecked={isChecked}
             onPress={() => {
-              console.log('preesed');
+              setIsChecked(!isChecked);
             }}
           />
           <Text
@@ -82,7 +93,7 @@ const Ayat = ({route, navigation}) => {
               styles.textLarge,
               styles.textBlack,
               styles.textArab,
-              getShow(),
+              toggleShowStyle(),
             ]}>
             {ayat.aya_text}
           </Text>
@@ -101,7 +112,11 @@ const Ayat = ({route, navigation}) => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, styles.buttonCircle]}
+          style={[
+            styles.button,
+            styles.buttonCircle,
+            isChecked ? {} : styles.buttonDisabled,
+          ]}
           onPress={() =>
             saveAyat({
               suratId: ayat.sura_id,
@@ -183,6 +198,10 @@ const styles = StyleSheet.create({
     width: '49%',
     backgroundColor: '#7F7FD5',
     color: '#fff',
+  },
+  buttonDisabled: {
+    backgroundColor: '#9F9FA1',
+    borderWidth: 0,
   },
   button: {
     borderRadius: 20,
