@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useIsFocused} from '@react-navigation/native';
 import {
   Text,
   View,
@@ -9,8 +11,9 @@ import {
 
 const Surat = ({route, navigation}) => {
   const surah = route.params.surah;
-
-  const AyatItem = ayat => {
+  const [progressData, setProgressData] = useState(null);
+  const isVisible = useIsFocused();
+  const AyatItem = (ayat, status = null) => {
     return (
       <TouchableOpacity
         style={styles.ayatItem}
@@ -23,22 +26,49 @@ const Surat = ({route, navigation}) => {
           })
         }>
         <View>
-          <Text>{ayat}</Text>
+          <Text>
+            {ayat} {status}
+          </Text>
         </View>
       </TouchableOpacity>
     );
   };
   const renderAyatItem = () => {
     let counter = [];
+    let filterData = progressData
+      ? progressData.filter(data => data.suratId === 78) || {}
+      : false;
     for (let i = 1; i <= surah.count_ayat; i++) {
-      counter.push(AyatItem(i));
+      if (filterData && filterData[0].ayat.includes(i - 1)) {
+        counter.push(AyatItem(i, 'active'));
+      } else {
+        counter.push(AyatItem(i));
+      }
     }
     return counter;
   };
+
+  const initData = async () => {
+    try {
+      const progress = await AsyncStorage.getItem('@Progress');
+      if (progress) {
+        setProgressData(JSON.parse(progress));
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    initData();
+  }, [isVisible]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={[styles.spacer]}>
-        <Text style={[styles.textBig, styles.text]}>Surat:</Text>
+        <Text style={[styles.textBig, styles.text]}>
+          Surat: {JSON.stringify(progressData)}
+        </Text>
         <Text style={[styles.textLarge, styles.textPurple, styles.textBold]}>
           {surah.surat_name}
         </Text>

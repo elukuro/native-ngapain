@@ -35,6 +35,18 @@ const Ayat = ({route, navigation}) => {
     if (isChecked) {
       try {
         await AsyncStorage.setItem('@LastVisit', JSON.stringify(payload));
+        const progressData = await AsyncStorage.getItem('@Progress');
+        if (progressData) {
+          navigation.navigate('Ayat', payload);
+        } else {
+          const progress = [
+            {
+              suratId: payload.suratId,
+              ayat: [payload.ayat - 1],
+            },
+          ];
+          await AsyncStorage.setItem('@Progress', JSON.stringify(progress));
+        }
         navigation.navigate('Ayat', payload);
       } catch (e) {
         console.log(e);

@@ -26,7 +26,12 @@ const Main = ({route, navigation}) => {
     const currentTime = new Date().getTime();
     const oneDayInMiliseconds = 24 * 60 * 60 * 1000;
     const dayCount = Math.floor(
-      (currentTime - JSON.parse(userData).time) / oneDayInMiliseconds,
+      (currentTime - JSON.parse(userData).time) /
+        oneDayInMiliseconds /
+        1000 /
+        60 /
+        60 /
+        24,
     );
     setUser(JSON.parse(userData));
     setSinceDay(dayCount);
