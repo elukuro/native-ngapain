@@ -16,7 +16,10 @@ const Surat = ({route, navigation}) => {
   const AyatItem = (ayat, status = null) => {
     return (
       <TouchableOpacity
-        style={styles.ayatItem}
+        style={[
+          styles.ayatItem,
+          {backgroundColor: status === 'active' ? '#7F7FD5' : '#E6E6E6'},
+        ]}
         key={ayat}
         onPress={() =>
           navigation.navigate('Ayat', {
@@ -26,9 +29,7 @@ const Surat = ({route, navigation}) => {
           })
         }>
         <View>
-          <Text>
-            {ayat} {status}
-          </Text>
+          <Text>{ayat}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -36,10 +37,10 @@ const Surat = ({route, navigation}) => {
   const renderAyatItem = () => {
     let counter = [];
     let filterData = progressData
-      ? progressData.filter(data => data.suratId === 78) || {}
+      ? progressData.filter(data => data.suratId === surah.id) || {}
       : false;
     for (let i = 1; i <= surah.count_ayat; i++) {
-      if (filterData && filterData[0].ayat.includes(i - 1)) {
+      if (filterData && filterData[0].ayat.includes(i)) {
         counter.push(AyatItem(i, 'active'));
       } else {
         counter.push(AyatItem(i));
@@ -66,9 +67,7 @@ const Surat = ({route, navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={[styles.spacer]}>
-        <Text style={[styles.textBig, styles.text]}>
-          Surat: {JSON.stringify(progressData)}
-        </Text>
+        <Text style={[styles.textBig, styles.text]}>Surat:</Text>
         <Text style={[styles.textLarge, styles.textPurple, styles.textBold]}>
           {surah.surat_name}
         </Text>

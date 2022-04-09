@@ -31,31 +31,44 @@ const Ayat = ({route, navigation}) => {
     };
   };
 
-  const saveAyat = async payload => {
+  const nextAyat = async payload => {
     if (isChecked) {
-      try {
-        await AsyncStorage.setItem('@LastVisit', JSON.stringify(payload));
-        const progressData = await AsyncStorage.getItem('@Progress');
-        if (progressData) {
-          navigation.navigate('Ayat', payload);
-        } else {
-          const progress = [
-            {
-              suratId: payload.suratId,
-              ayat: [payload.ayat - 1],
-            },
-          ];
-          await AsyncStorage.setItem('@Progress', JSON.stringify(progress));
-        }
-        navigation.navigate('Ayat', payload);
-      } catch (e) {
-        console.log(e);
+      saveAyat(payload);
+      navigation.navigate('Ayat', payload);
+      await AsyncStorage.setItem(
+        '@LastVisit',
+        JSON.stringify({suratName: surat, ayat: payload.ayat}),
+      );
+    }
+  };
+
+  const saveAyat = async payload => {
+    try {
+      const progressData = await AsyncStorage.getItem('@Progress');
+      let progress = [];
+      if (progressData) {
+        const progressDataParse = JSON.parse(progressData)[0];
+        progress = [
+          {
+            suratId: progressDataParse.suratId,
+            ayat: [...progressDataParse.ayat, payload.ayat - 1],
+          },
+        ];
+      } else {
+        progress = [
+          {
+            suratId: payload.suratId,
+            ayat: [payload.ayat - 1],
+          },
+        ];
       }
+      await AsyncStorage.setItem('@Progress', JSON.stringify(progress));
+    } catch (e) {
+      console.log(e);
     }
   };
 
   useEffect(() => {
-    console.log('visible', isVisible);
     if (isVisible) {
       let {suratName, ...payload} = route.params;
       setAyat(API.getDetail(payload)[0]);
@@ -81,13 +94,7 @@ const Ayat = ({route, navigation}) => {
         </Text>
       </View>
       <View style={[styles.largeVerticalSpacer, styles.spacer]}>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-          }}>
+        <View style={styles.checkbox}>
           <BouncyCheckbox
             style={{marginRight: 16}}
             size={30}
@@ -130,7 +137,7 @@ const Ayat = ({route, navigation}) => {
             isChecked ? {} : styles.buttonDisabled,
           ]}
           onPress={() =>
-            saveAyat({
+            nextAyat({
               suratId: ayat.sura_id,
               suratName: surat,
               ayat: ayat.aya_number + 1,
@@ -226,6 +233,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  checkbox: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
 });
 
