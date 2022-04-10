@@ -33,38 +33,16 @@ const Ayat = ({route, navigation}) => {
 
   const nextAyat = async payload => {
     if (isChecked) {
-      saveAyat(payload);
-      navigation.navigate('Ayat', payload);
       await AsyncStorage.setItem(
         '@LastVisit',
-        JSON.stringify({suratName: surat, ayat: payload.ayat}),
-      );
-    }
-  };
-
-  const saveAyat = async payload => {
-    try {
-      const progressData = await AsyncStorage.getItem('@Progress');
-      let progress = [];
-      if (progressData) {
-        const progressDataParse = JSON.parse(progressData)[0];
-        progress = [
-          {
-            suratId: progressDataParse.suratId,
-            ayat: [...progressDataParse.ayat, payload.ayat - 1],
-          },
-        ];
-      } else {
-        progress = [
-          {
-            suratId: payload.suratId,
-            ayat: [payload.ayat - 1],
-          },
-        ];
-      }
-      await AsyncStorage.setItem('@Progress', JSON.stringify(progress));
-    } catch (e) {
-      console.log(e);
+        JSON.stringify({
+          suratName: surat,
+          ayat: payload.ayat,
+          suratId: payload.suratId,
+        }),
+      ).then(() => {
+        navigation.navigate('Ayat', payload);
+      });
     }
   };
 
@@ -76,6 +54,52 @@ const Ayat = ({route, navigation}) => {
       setIsChecked(false);
     }
   }, [isVisible, route.params]);
+
+  useEffect(() => {
+    const saveAyat = async () => {
+      const {suratId = ayat.sura_id, ayatNumber = ayat.aya_number} = ayat;
+      if (!suratId && !ayatNumber) {
+        return;
+      }
+      try {
+        const progressData = await AsyncStorage.getItem('@Progress');
+        console.log('progressData', progressData);
+        let progress = [];
+        if (progressData) {
+          const progressDataParse = JSON.parse(progressData);
+          const findIndex = progressDataParse.findIndex(
+            a => a.suratId === suratId,
+          );
+          console.log('dataParse', progressDataParse);
+          if (findIndex !== -1) {
+            progressDataParse[findIndex].ayat = [
+              ...new Set([...progressDataParse[findIndex].ayat, ayatNumber]),
+            ];
+            console.log('new progress', progressDataParse);
+            progress = progressDataParse;
+          } else {
+            progress.push({
+              suratId,
+              ayat: [ayatNumber],
+            });
+          }
+        } else {
+          progress.push({
+            suratId,
+            ayat: [ayatNumber],
+          });
+        }
+        console.log(progress);
+        await AsyncStorage.setItem('@Progress', JSON.stringify(progress));
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    if (isChecked && isVisible) {
+      saveAyat();
+    }
+  }, [isChecked, ayat, isVisible]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.spacer}>

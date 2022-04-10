@@ -37,10 +37,10 @@ const Surat = ({route, navigation}) => {
   const renderAyatItem = () => {
     let counter = [];
     let filterData = progressData
-      ? progressData.filter(data => data.suratId === surah.id) || {}
-      : false;
+      ? progressData.filter(data => data.suratId === surah.id)
+      : [];
     for (let i = 1; i <= surah.count_ayat; i++) {
-      if (filterData && filterData[0].ayat.includes(i)) {
+      if (filterData.length > 0 && filterData[0].ayat.includes(i)) {
         counter.push(AyatItem(i, 'active'));
       } else {
         counter.push(AyatItem(i));
